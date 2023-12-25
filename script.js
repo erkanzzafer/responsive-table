@@ -96,9 +96,11 @@ const toJSON=function(table){
         t_rows=table.querySelectorAll('tbody tr');      
         for (let t_heading of t_headings){
           //  console.log(t_heading.textContent.trim().split(' '));
-            //let actual_head=t_heading.textContent.trim().split(' ');
-            let actual_head=t_heading.textContent.trim();
-            t_head.push(actual_head.substr(0,actual_head.length-1).trim().toLowerCase());
+            let actual_head=t_heading.textContent.trim().split(' ');
+            //let actual_head=t_heading.textContent.trim();
+            //t_head.push(actual_head.substr(0,actual_head.length-1).trim().toLowerCase());
+            t_head.push(actual_head.splice(0,actual_head.length-1).join(' ').toLowerCase());
+
         }  
         //console.log(t_head);
         t_rows.forEach(row=>{
@@ -126,18 +128,108 @@ const toJSON=function(table){
 const json_btn = document.querySelector('#toJSON');
 json_btn.onclick=()=>{
     const json=toJSON(customers_table);
-    downloadFile(json,'customers_order.json');
+    downloadFile(json,'json');
 }
 
-const downloadFile=function(text,fileName){
+
+//coverting to excel
+const excel_btn = document.querySelector('#toEXCEL');
+
+const toExcel=function(table){
+    /* Code For Simple Table
+const t_rows=table.querySelectorAll('tr');
+   return  [...t_rows].map(row=>{
+        const cells = row.querySelectorAll('th,td');
+      return  [...cells].map(cell=>cell.textContent.trim()).join('\t');
+    }).join('\n');*/
+
+
+const t_heads = table.querySelectorAll('th'),
+    tbody_rows=table.querySelectorAll('tbody tr');
+
+  const headings=[...t_heads].map(head=>{
+        let actual_head=head.textContent.trim().split(' ');
+       return actual_head.splice(0,actual_head.length-1).join(' ').toLowerCase();
+    }).join('\t')+'\t'+'image name';
+
+   const table_data=[...tbody_rows].map(row=>{
+        const cells = row.querySelectorAll('td'),
+            img=decodeURIComponent(row.querySelector('img').src);
+      data_without_img=  [...cells].map(cell=>cell.textContent.trim()).join('\t');
+      return data_without_img +'\t'+ img;
+    }).join('\n');
+
+   return headings+'\n'+table_data;
+
+}
+
+excel_btn.onclick=()=>{
+  const excel=toExcel(customers_table);
+  downloadFile(excel,'excel')
+}
+
+
+
+
+//coverting to csv
+const csv_btn = document.querySelector('#toCSV');
+
+const toCSV=function(table){
+   /*//  Code For Simple Table
+const t_rows=table.querySelectorAll('tr');
+   return  [...t_rows].map(row=>{
+        const cells = row.querySelectorAll('th,td');
+      return  [...cells].map(cell=>cell.textContent.trim()).join(',');
+    }).join('\n');*/
+
+
+const t_heads = table.querySelectorAll('th'),
+    tbody_rows=table.querySelectorAll('tbody tr');
+
+  const headings=[...t_heads].map(head=>{
+        let actual_head=head.textContent.trim().split(' ');
+       return actual_head.splice(0,actual_head.length-1).join(' ').toLowerCase();
+    }).join(',')+','+'image name';
+
+   const table_data=[...tbody_rows].map(row=>{
+        const cells = row.querySelectorAll('td'),
+            img=decodeURIComponent(row.querySelector('img').src);
+      data_without_img=  [...cells].map(cell=>cell.textContent.trim()).join(',');
+      return data_without_img +','+ img;
+    }).join('\n');
+
+   return headings+'\n'+table_data;
+
+}
+
+csv_btn.onclick=()=>{
+  const csv=toCSV(customers_table);
+  downloadFile(csv,'csv')
+}
+
+
+
+
+
+
+
+
+
+
+
+const downloadFile=function(data,fileType,fileName=''){
     const a =document.createElement('a');
     a.download=fileName;
-
+const mime_types={
+    'json' : 'application/json',
+    'csv' : 'text/csv', 
+    'excel':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+}
     a.href=`
-    data:application/json;charset=utf-8,${encodeURIComponent(text)}
+    data:${mime_types[fileType]};charset=utf-8,${encodeURIComponent(data)}
     `;
     document.body.appendChild(a);
     a.click();
     a.remove();
-
 }
+
