@@ -63,8 +63,11 @@ function sortable(column,sort_asc){
 }
 
 
-//Coverting HTML Table to PDF
 
+
+
+const customers_table=document.querySelector('#customers_table');
+//Coverting HTML Table to PDF
 const toPDF=function(customers_table){
     const html_code= `
     <link rel="stylesheet" href="style.css">
@@ -78,9 +81,63 @@ const toPDF=function(customers_table){
     },200);
 }
 
-
 const pdf_btn=document.querySelector('#toPDF');
-const customers_table=document.querySelector('#customers_table');
 pdf_btn.onclick=()=>{
     toPDF(customers_table);
+}
+
+
+//Coverting HTML Table to JSON
+const toJSON=function(table){
+    let table_data=[],
+        t_head=[],
+
+        t_headings = table.querySelectorAll('th'),
+        t_rows=table.querySelectorAll('tbody tr');      
+        for (let t_heading of t_headings){
+          //  console.log(t_heading.textContent.trim().split(' '));
+            //let actual_head=t_heading.textContent.trim().split(' ');
+            let actual_head=t_heading.textContent.trim();
+            t_head.push(actual_head.substr(0,actual_head.length-1).trim().toLowerCase());
+        }  
+        //console.log(t_head);
+        t_rows.forEach(row=>{
+            const row_object={},
+                t_cells=row.querySelectorAll('td');
+
+                t_cells.forEach((t_cell,cell_i)=>{
+                    const img=t_cell.querySelector('img');
+                    if(img){
+                        row_object['customer image'] =  decodeURIComponent(img.src);
+                    }
+                    row_object[t_head[cell_i]]=t_cell.textContent.trim();
+
+                });
+                 //console.log(row_object);
+                table_data.push(row_object);
+        })
+            //console.log(JSON.stringify(table_data,null,4));
+        return JSON.stringify(table_data,null,4);
+}
+
+
+
+
+const json_btn = document.querySelector('#toJSON');
+json_btn.onclick=()=>{
+    const json=toJSON(customers_table);
+    downloadFile(json,'customers_order.json');
+}
+
+const downloadFile=function(text,fileName){
+    const a =document.createElement('a');
+    a.download=fileName;
+
+    a.href=`
+    data:application/json;charset=utf-8,${encodeURIComponent(text)}
+    `;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
 }
