@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Responsive Table With Pure CSS</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<main class="table" id="customers_table">
+		<section class="table__header">
+			<h1>Customer's Orders</h1>
+			<div class="input-group">
+				<input id="search_box" type="search" placeholder="Search Data...">
+				<img src="img/search.png" alt="">
+			</div>
+			<div class="export__file">
+				<label for="export-file" class="export__file-btn" title="Export File"></label>
+				<input type="checkbox" id="export-file" name="">
+				<div class="export__file-options">
+					<label>Export As &nbsp; &#10140;</label>
+					<label for="export-file" id="toPDF">PDF <img src="img/pdf.png"></label>
+					<label for="export-file">PDF <img src="img/pdf.png"></label>
+
+				</div>
+			</div>
+
+
+		</section>
+		<section class="table__body">
+			<table>
+				<thead>
+					<tr>
+						<th>id <span class="icon-arrow">&Uparrow;</span></th>
+						<th>Customer <span class="icon-arrow">&Uparrow;</span></th>
+						<th>Location <span class="icon-arrow">&Uparrow;</span></th>
+						<th>Order Date <span class="icon-arrow">&Uparrow;</span></th>
+						<th>Status <span class="icon-arrow">&Uparrow;</span></th>
+						<th>Amount <span class="icon-arrow">&Uparrow;</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td><img width="100" height="100" src="img/1.jpg" alt="Dummy Image" />
+						</td>
+						<td>Turkey</td>
+						<td>24 Aralık 2023</td>
+						<td>
+							<p class="status delivered">Delivered</p>
+						</td>
+						<td><strong>$1234</strong></td>
+					</tr>
+
+					<tr>
+						<td>2</td>
+						<td><img width="100" height="100" src="img/1.jpg" alt="Dummy Image" />
+						</td>
+						<td>Italy</td>
+						<td>24 Aralık 2023</td>
+						<td>
+							<p class="status canceled">Canceled</p>
+						</td>
+						<td>$1234</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td><img width="100" height="100" src="img/1.jpg" alt="Dummy Image" />
+						</td>
+						<td>England</td>
+						<td>24 Aralık 2023</td>
+						<td>
+							<p class="status shipped">Shipped</p>
+						</td>
+						<td>$1234</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td><img width="100" height="100" src="img/1.jpg" alt="Dummy Image" />
+						</td>
+						<td>France</td>
+						<td>24 Aralık 2023</td>
+						<td>
+							<p class="status pending">Pending</p>
+						</td>
+						<td>$1234</td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td><img width="100" height="100" src="img/1.jpg" alt="Dummy Image" />
+						</td>
+						<td>France</td>
+						<td>24 Aralık 2023</td>
+						<td>
+							<p class="status pending">Pending</p>
+						</td>
+						<td>$1234</td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+		</section>
+	</main>
+
+	<script src="script.js">
+
+	</script>
+</body>
+
+</html>
